@@ -5,7 +5,7 @@
 import {List, Map} from 'immutable';
 import {expect} from 'chai';
 
-import {setEntries} from '../src/core';
+import {setEntries, next} from '../src/core';
 
 describe('application logic', () => {
 
@@ -25,6 +25,19 @@ describe('application logic', () => {
             const nextState = setEntries(state, entries);
 
             expect(nextState).to.equal(Map({entries: List.of('LotR', 'GoT', 'Matrix')}));
+        });
+    });
+
+    describe('next', () => {
+
+        it('takes the next two entries under vote and they should no longer be in the entries list', () => {
+            const state = Map({entries: List.of('LotR', 'GoT', 'Matrix')});
+            const nextState = next(state);
+
+            expect(nextState).to.equal(Map({
+                vote: Map({pair: List.of('LotR', 'GoT')}),
+                entries: List.of('Matrix')
+            }));
         });
     });
 
