@@ -5,7 +5,7 @@
 import {List, Map} from 'immutable';
 import {expect} from 'chai';
 
-import {setEntries, next} from '../src/core';
+import {setEntries, next, vote} from '../src/core';
 
 describe('application logic', () => {
 
@@ -37,6 +37,43 @@ describe('application logic', () => {
             expect(nextState).to.equal(Map({
                 vote: Map({pair: List.of('LotR', 'GoT')}),
                 entries: List.of('Matrix')
+            }));
+        });
+    });
+
+    describe('vote', () => {
+
+        it('creates a tally for the voted entry', () => {
+            const state = Map({
+                vote: Map({pair: List.of('LotR', 'GoT')}),
+                entries: List()
+            });
+            const nextState = vote(state, 'LotR');
+
+            expect(nextState).to.equal(Map({
+                vote: Map({
+                    pair: List.of('LotR', 'GoT'),
+                    tally: Map({'LotR': 1})
+                }),
+                entries: List()
+            }));
+        });
+
+        it('adds to existing tally for the voted entry', () => {
+            const state = Map({
+                vote: Map({
+                    pair: List.of('LotR', 'GoT'),
+                    tally: Map({'LotR': 4, 'GoT': 5})
+                }),
+                entries: List()
+            });
+            const nextState = vote(state, 'GoT');
+            expect(nextState).to.equal(Map({
+                vote: Map({
+                    pair: List.of('LotR', 'GoT'),
+                    tally: Map({'LotR': 4, 'GoT': 6})
+                }),
+                entries: List()
             }));
         });
     });
