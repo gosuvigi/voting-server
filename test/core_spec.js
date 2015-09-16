@@ -81,6 +81,20 @@ describe('application logic', () => {
                 entries: List.of('Dark City', 'LotR', 'GoT')
             }));
         });
+
+        it('marks the winner when there is just one entry left', () => {
+            const state = Map({
+                vote: Map({
+                    pair: List.of('LotR', 'GoT'),
+                    tally: Map({'LotR': 5, 'GoT': 8})
+                }),
+                entries: List()
+            });
+
+            const nextState = next(state);
+
+            expect(nextState).to.equal(Map({winner: 'GoT'}));
+        });
     });
 
     describe('vote', () => {

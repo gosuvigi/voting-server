@@ -16,12 +16,21 @@ export function setEntries(state, entries) {
  * so that it will later be paired with something else. The losing entry is thrown away.
  * If there is a tie, both entries are kept.
  *
+ * At some point there's just going to be one entry left when a vote ends. At that point we have a winning entry.
+ * What we should do is, instead of trying to form a next vote, just set the winner in the state explicitly.
+ * The vote is over.
+ *
  * @param state
  * @returns {*}
  */
 export function next(state) {
     const entries = state.get('entries').concat(getWinners(state.get('vote')));
 
+    if (entries.size == 1) {
+        return state.remove('vote')
+            .remove('entries')
+            .set('winner', entries.first());
+    }
 
     return state.merge({
         vote: Map({pair: entries.take(2)}),
