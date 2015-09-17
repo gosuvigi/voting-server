@@ -63,10 +63,10 @@ function getWinners(vote) {
  * When a new vote is cast for an entry, a "tally" for it should appear in the vote.
  * If there already is a tally for the entry, it should be incremented.
  *
- * @param state
+ * @param voteState
  * @param entry
  * @returns {*}
  */
-export function vote(state, entry) {
-    return state.updateIn(['vote', 'tally', entry], 0, tally => tally + 1);
+export function vote(voteState, entry) {
+    return voteState.updateIn(['tally', entry], 0, tally => tally + 1);
 }

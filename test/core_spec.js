@@ -101,38 +101,28 @@ describe('application logic', () => {
 
         it('creates a tally for the voted entry', () => {
             const state = Map({
-                vote: Map({pair: List.of('LotR', 'GoT')}),
-                entries: List()
+                pair: List.of('LotR', 'GoT')
             });
 
             const nextState = vote(state, 'LotR');
 
             expect(nextState).to.equal(Map({
-                vote: Map({
-                    pair: List.of('LotR', 'GoT'),
-                    tally: Map({'LotR': 1})
-                }),
-                entries: List()
+                pair: List.of('LotR', 'GoT'),
+                tally: Map({'LotR': 1})
             }));
         });
 
         it('adds to existing tally for the voted entry', () => {
             const state = Map({
-                vote: Map({
-                    pair: List.of('LotR', 'GoT'),
-                    tally: Map({'LotR': 4, 'GoT': 5})
-                }),
-                entries: List()
+                pair: List.of('LotR', 'GoT'),
+                tally: Map({'LotR': 4, 'GoT': 5})
             });
 
             const nextState = vote(state, 'GoT');
 
             expect(nextState).to.equal(Map({
-                vote: Map({
-                    pair: List.of('LotR', 'GoT'),
-                    tally: Map({'LotR': 4, 'GoT': 6})
-                }),
-                entries: List()
+                pair: List.of('LotR', 'GoT'),
+                tally: Map({'LotR': 4, 'GoT': 6})
             }));
         });
     });
